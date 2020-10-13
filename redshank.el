@@ -362,14 +362,14 @@ Nothing is done if point is not preceding a PROGN form."
 (defun redshank-point-at-enclosing-let-form ()
   "Move point to enclosing LET/LET* form if existing.
 Point is not moved across other binding forms \(e.g., DEFUN,
-LABELS or FLET.)"
+LABELS or CL-FLET.)"
   (interactive)
   (let ((here.point (point)))
     (or (ignore-errors
           (block nil
             (backward-up-list)
             (while (not (looking-at "(let\\*?\\S_"))
-              (when (looking-at "(\\(def\\s_*\\|labels\\|flet\\)\\S_")
+              (when (looking-at "(\\(def\\s_*\\|labels\\|cl-flet\\)\\S_")
                 (return nil))
               (backward-up-list))
             (point)))
@@ -688,7 +688,7 @@ involves macro-expanding code, and as such might have side effects."
                                   ,(or package (slime-pretty-package-name
                                                 (slime-current-package))))
                                 package)))
-    (flet ((princ-to-string (o)
+    (cl-flet ((princ-to-string (o)
              (with-output-to-string
                (princ (if (null o) "()" o)))))
       (with-temp-buffer
@@ -734,7 +734,7 @@ Example:
 (defun redshank-condify-form ()
   "Transform a Common Lisp IF form into an equivalent COND form."
   (interactive "*")
-  (flet ((redshank--frob-cond-branch ()
+  (cl-flet ((redshank--frob-cond-branch ()
             (paredit-wrap-sexp +2)
             (forward-sexp)
             (redshank-maybe-splice-progn)))
@@ -770,7 +770,7 @@ With optional numeric argument, wrap N top-level forms."
   "Rewrite the negated predicate of a WHEN or UNLESS form at point."
   (interactive "*")
   (save-excursion
-    (flet ((redshank--frob-form (new-head)
+    (cl-flet ((redshank--frob-form (new-head)
              (paredit-forward-kill-word)
              (insert new-head)
              (paredit-forward-kill-word)

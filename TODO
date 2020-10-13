@@ -26,12 +26,12 @@ keep track of break points, redshank-unbreak-all
 Perhaps this is better done with break-on-enter (if the implementation
 supports it?)
 
-** redshank-extract-{flet,labels}
+** redshank-extract-{cl-flet,labels}
 (let ((context (parse-context)))
   (while (not (endp context))
     (when (and (null (pop context))
-               (member (first context) '(flet labels)))
-      ; this is the beginning of the flet
+               (member (first context) '(cl-flet labels)))
+      ; this is the beginning of the cl-flet
       )
 
 A better way would be a more general partial parsing framework...

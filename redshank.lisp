@@ -23,7 +23,7 @@
 
 (defun find-variables (form &optional env)
   (let ((vars '()))
-    (flet ((record-variable (x)
+    (cl-flet ((record-variable (x)
              (when (and (symbolp x)
                         (not (constantp x env)))
                (pushnew x vars))))
