@@ -366,11 +366,11 @@ LABELS or CL-FLET.)"
   (interactive)
   (let ((here.point (point)))
     (or (ignore-errors
-          (block nil
+          (cl-block nil
             (backward-up-list)
             (while (not (looking-at "(let\\*?\\S_"))
               (when (looking-at "(\\(def\\s_*\\|labels\\|cl-flet\\)\\S_")
-                (return nil))
+                (cl-return nil))
               (backward-up-list))
             (point)))
         (prog1 nil
@@ -420,7 +420,7 @@ LABELS or CL-FLET.)"
 (defun redshank--sexp-column-widths ()
   "Return list of column widths for s-expression at point."
   (down-list)
-  (loop do (while (forward-comment 1))
+  (cl-loop do (while (forward-comment 1))
         until (or (looking-at ")") (eobp))
         collect (- (- (point)
                       (progn
@@ -435,7 +435,7 @@ LABELS or CL-FLET.)"
   "Align expressions in S-expression at point.
 COLUMN-WIDTHS is expected to be a list."
   (down-list)
-  (loop initially (while (forward-comment +1))
+  (cl-loop initially (while (forward-comment +1))
         for width in column-widths
         until (looking-at ")")
         do (let ((beg (point)))
@@ -497,7 +497,7 @@ but does otherwise nothing."
              (match-string-no-properties 2)))))))
 
 (defun redshank--assoc-match (key alist)
-  (loop for entry in alist do
+  (cl-loop for entry in alist do
         (cond ((stringp (car entry))
                (when (eq t (compare-strings (car entry) 0 nil
                                             key 0 nil
@@ -536,9 +536,9 @@ but does otherwise nothing."
 
 (defun redshank-asdf-classify-component (directory filename)
   (dolist (mapping redshank-asdf-component-mapping)
-    (destructuring-bind (regex tag &optional filename-fn) mapping
+    (cl-destructuring-bind (regex tag &optional filename-fn) mapping
       (when (string-match regex (concat directory filename))
-        (return `(,tag ,@(if filename-fn
+        (cl-return `(,tag ,@(if filename-fn
                              (funcall filename-fn filename)
                            (list (file-name-sans-extension filename)))))))))
 
