@@ -502,12 +502,12 @@ but does otherwise nothing."
                (when (eq t (compare-strings (car entry) 0 nil
                                             key 0 nil
                                             case-fold-search))
-                 (return entry)))
+                 (cl-return entry)))
               ((functionp (car entry))
                (when (funcall (car entry) key)
-                 (return entry)))
+                 (cl-return entry)))
               ((eq t (car entry))
-               (return entry)))))
+               (cl-return entry)))))
 
 ;;; ASDF
 (defun redshank-walk-filesystem (spec enter-fn leave-fn)
@@ -801,15 +801,15 @@ is formatted as:
     (narrow-to-region beg end)
     (goto-char beg)
     (let* ((columns
-            (loop do (while (forward-comment +1))
+            (cl-loop do (while (forward-comment +1))
                   until (or (looking-at ")") (eobp))
                   collect (redshank--sexp-column-widths)))
            (max-column-widths
-            (loop for cols = columns then (mapcar #'cdr cols)
+            (cl-loop for cols = columns then (mapcar #'cdr cols)
                   while (some #'consp cols)
                   collect (apply #'redshank--max* (mapcar #'car cols)))))
       (goto-char beg)
-      (loop do (while (forward-comment +1))
+      (cl-loop do (while (forward-comment +1))
             until (or (looking-at ")") (eobp))
             do (redshank-align-sexp-columns max-column-widths)))))
 
